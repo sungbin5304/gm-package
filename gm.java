@@ -43,7 +43,8 @@ public class gm extends Application{
             isr.close();
             br.close();
             return str;
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             toast(e.toString());
         }
         return "";
@@ -55,7 +56,8 @@ public class gm extends Application{
             FileOutputStream fos = new java.io.FileOutputStream(file);
             fos.write(str.getBytes());
             fos.close();
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             toast(e.toString());
         }
     }
@@ -81,7 +83,8 @@ public class gm extends Application{
                     }
                 }
             }
-        } catch (Exception e) {
+        }
+        catch (Exception e) {
             toast(e.toString());
         }
         return null;
