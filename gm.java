@@ -1,5 +1,3 @@
-package com.sungbin.word.chain.online;
-
 /**
 * Created by SungBin on 2018-10-21.
 */
