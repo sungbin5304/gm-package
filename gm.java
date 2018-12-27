@@ -146,4 +146,19 @@ public class gm extends Application{
      }
      return new BitmapDrawable();
     }
+    
+    public static String replaceLast(m, a, b){
+        int tf = m.indexOf(a);
+        if(tf!=-1){ //true
+            String _o = m.lastIndexOf(a);
+            String o_ = a.length;
+            String o1 = m.substring(0, _o);
+            String o2 = m.substring((_o+o_),m.length);
+            return o1+""+b+""+o2;
+        }
+        if(tf==-1) {//false
+            return m;
+        }
+    }
+
 }
