@@ -1,15 +1,21 @@
+package com.sungbin.kakaotalk.bot;
+
 /**
-* Created by SungBin on 2018-10-21.
-*/
+ * Created by SungBin on 2018-10-21.
+ */
 
 import android.app.*;
 import android.content.*;
+import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.*;
+import android.util.Log;
 import android.widget.*;
 import java.io.*;
 import java.net.URL;
 import java.net.URLConnection;
 import android.content.ClipboardManager;
+
 
 public class gm extends Application{
 
@@ -24,13 +30,13 @@ public class gm extends Application{
     }
 
     public static void createFolder(String name){
-        new File(sdcard+"/WordChain Online/"+name+"/").mkdirs();
+        new File(sdcard+"/New kakaotalk Bot 2/"+name+"/").mkdirs();
     }
 
-    public static String read(String name) {
+    public static String read(String name, String _null) {
         try {
-            File file = new File(sdcard+"/WordChain Online/"+name+".txt");
-            if(!file.exists()) return "";
+            File file = new File(sdcard+"/New kakaotalk Bot 2/"+name);
+            if(!file.exists()) return _null;
             FileInputStream fis = new FileInputStream(file);
             InputStreamReader isr = new InputStreamReader(fis);
             BufferedReader br = new BufferedReader(isr);
@@ -47,12 +53,12 @@ public class gm extends Application{
         catch (Exception e) {
             toast(e.toString());
         }
-        return "";
+        return _null;
     }
 
     public static void save(String name, String str) {
         try {
-            File file = new File(sdcard+"/WordChain Online/"+name+".txt");
+            File file = new File(sdcard+"/New kakaotalk Bot 2/"+name);
             FileOutputStream fos = new java.io.FileOutputStream(file);
             fos.write(str.getBytes());
             fos.close();
@@ -60,6 +66,11 @@ public class gm extends Application{
         catch (Exception e) {
             toast(e.toString());
         }
+    }
+
+    public static void delete(String name){
+        File file = new File(sdcard+"/New kakaotalk Bot 2/"+name);
+        file.delete();
     }
 
     public static String getHtml(String link) {
@@ -98,6 +109,10 @@ public class gm extends Application{
         Toast.makeText(ctx2, msg, Toast.LENGTH_SHORT).show();
     }
 
+    public static void Ltoast(Context ctx2, String msg) {
+        Toast.makeText(ctx2, msg, Toast.LENGTH_LONG).show();
+    }
+
     public static int Number(String num){
         return Integer.parseInt(num);
     }
@@ -124,41 +139,49 @@ public class gm extends Application{
     }
 
     public static void copy(Context ctx, String text){
-      ClipboardManager clipboard = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
-      ClipData clip = ClipData.newPlainText("label", text);
-      clipboard.setPrimaryClip(clip);
-      Toast.makeText(ctx, "클립보드에 복사되었습니다.", 1).show();
-  }
+        ClipboardManager clipboard = (ClipboardManager) ctx.getSystemService(Context.CLIPBOARD_SERVICE);
+        ClipData clip = ClipData.newPlainText("label", text);
+        clipboard.setPrimaryClip(clip);
+        Toast.makeText(ctx, "클립보드에 복사되었습니다.", Toast.LENGTH_LONG).show();
+    }
+
+    public static void error(Context ctx, Exception e, String name){
+        String data = "Error: "+e+"\nLineNumber: "+e.getStackTrace()[0].getLineNumber()+"\nAt: "+name;
+        gm.toast(ctx, data);
+        gm.copy(ctx, data);
+        Log.e("Error", data);
+    }
+
+    public static void error(Context ctx, Exception e){
+        String data = "Error: "+e+"\nLineNumber: "+e.getStackTrace()[0].getLineNumber();
+        gm.toast(ctx, data);
+        gm.copy(ctx, data);
+        Log.e("Error", data);
+    }
 
     public static BitmapDrawable getImageDrawable(String link){
-      try {
-        URL url = new URL(link);
-        URLConnection con = url.openConnection();
-        con.setUseCaches(false);
-        con.setConnectTimeout(5000);
-        BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
-        BitmapDrawable image = new BitmapDrawable(BitmapFactory.decodeStream(bis));
-        bis.close();
-        return image;
-      }
-      catch(Exception e) {
-        Toast.makeText(ctx, e.toString(), 1).show();
-     }
-     return new BitmapDrawable();
-    }
-    
-    public static String replaceLast(m, a, b){
-        int tf = m.indexOf(a);
-        if(tf!=-1){ //true
-            String _o = m.lastIndexOf(a);
-            String o_ = a.length;
-            String o1 = m.substring(0, _o);
-            String o2 = m.substring((_o+o_),m.length);
-            return o1+""+b+""+o2;
+        try {
+            URL url = new URL(link);
+            URLConnection con = url.openConnection();
+            con.setUseCaches(false);
+            con.setConnectTimeout(5000);
+            BufferedInputStream bis = new BufferedInputStream(con.getInputStream());
+            BitmapDrawable image = new BitmapDrawable(BitmapFactory.decodeStream(bis));
+            bis.close();
+            return image;
         }
-        if(tf==-1) {//false
-            return m;
+        catch(Exception e) {
+            Toast.makeText(ctx, e.toString(), Toast.LENGTH_SHORT).show();
         }
+        return new BitmapDrawable();
     }
-    
+
+    public static void restart(Context context){
+        Intent mStartActivity = new Intent(context, MainActivity.class);
+        int mPendingIntentId = 123456;
+        PendingIntent mPendingIntent = PendingIntent.getActivity(context, mPendingIntentId, mStartActivity, PendingIntent.FLAG_CANCEL_CURRENT);
+        AlarmManager mgr = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        mgr.set(AlarmManager.RTC, System.currentTimeMillis()+100, mPendingIntent);
+        System.exit(0);
+    }
 }
